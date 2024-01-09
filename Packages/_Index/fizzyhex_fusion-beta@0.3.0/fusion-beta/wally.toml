@@ -1,0 +1,14 @@
+[package]
+name = "fizzyhex/fusion-beta"
+description = "Fusion 0.3.0-dev.1 by Elttob"
+license = "MIT"
+authors = ["Elttob"]
+version = "0.3.0"
+
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+exclude = ["**"]
+include = ["src", "src/*", "default.project.json", "wally.lock", "wally.toml"]
+
+[dependencies]

@@ -1,0 +1,30 @@
+{
+  "name": "rbx-mouse-and-cat",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "shared": {
+        "$path": "src/shared"
+      },
+
+      "Packages": {
+        "$path": "Packages"
+      }
+    },
+
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "client": {
+          "$path": "src/client"
+        }
+      }
+    },
+
+    "ServerScriptService": {
+      "server": {
+        "$path": "src/server"
+      }
+    }
+  }
+}
