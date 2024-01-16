@@ -3,7 +3,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PlacementUtil = require(ReplicatedStorage.shared.PlacementUtil)
 local remotes = require(ReplicatedStorage.shared.remotes)
 
-remotes.build.OnServerInvoke = function(player, prefab: Model, position: Vector3)
+remotes.build.OnServerInvoke = function(player, tool: Tool, prefab: Model, position: Vector3)
     local cost = prefab:GetAttribute("cost")
     local balance = player:GetAttribute("money")
 
@@ -25,6 +25,14 @@ remotes.build.OnServerInvoke = function(player, prefab: Model, position: Vector3
         })
         
         return
+    end
+
+    if tool:GetAttribute("uses") then
+        tool:SetAttribute("uses", tool:GetAttribute("uses") - 1)
+
+        if tool:GetAttribute("uses") <= 0 then
+            tool:Destroy()
+        end
     end
 
     player:SetAttribute("money", balance - cost)

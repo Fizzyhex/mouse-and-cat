@@ -39,13 +39,13 @@ local function raycastFromScreenPoint(position: Vector2): {didHit: true, origin:
     }
 end
 
-local function placeBlock(blockData: PlacementUtil.BlockData, position: Vector3)
+local function placeBlock(tool: Tool, blockData: PlacementUtil.BlockData, position: Vector3)
     local tempBlock = blockData.prefab:Clone()
     tempBlock:PivotTo(CFrame.new(position))
     tempBlock.Parent = workspace
 
     local ok, err = pcall(function()
-        remotes.build:InvokeServer(blockData.prefab, position)
+        remotes.build:InvokeServer(tool, blockData.prefab, position)
     end)
 
     if not ok then
@@ -78,6 +78,7 @@ local function alignBlock(blockData: PlacementUtil.BlockData, position: Vector3)
     }
 end
 
+local currentTool: Tool
 local blockIndex = 1
 local blockData: PlacementUtil.BlockData = PlacementUtil.getBlockData(DEFAULT_BLOCKS:GetChildren()[blockIndex])
 local blockPreview: PlacementUtil.BlockModel?
@@ -97,7 +98,7 @@ local function _onCycleInput(actionName: string, inputState: Enum.UserInputState
     end
 end
 
-local function onBuildInput(actionName: string, inputState: Enum.UserInputState, inputObject: InputObject)
+local function onBuildInput(_, inputState: Enum.UserInputState)
     if inputState == Enum.UserInputState.Begin then
         local raycast = raycastFromScreenPoint(UserInputService:GetMouseLocation())
 
@@ -114,11 +115,11 @@ local function onBuildInput(actionName: string, inputState: Enum.UserInputState,
         end
 
         print("Placed")
-        placeBlock(blockData, positionResult.value)
+        placeBlock(currentTool, blockData, positionResult.value)
     end
 end
 
-local function getPreviewPosition(blockPreview: PlacementUtil.BlockModel): Vector3?
+local function getPreviewPosition(): Vector3?
     local raycast = raycastFromScreenPoint(UserInputService:GetMouseLocation())
     
     if not raycast.didHit then
@@ -139,7 +140,7 @@ RunService.RenderStepped:Connect(function()
         return
     end
 
-    local previewPosition = getPreviewPosition(blockPreview)
+    local previewPosition = getPreviewPosition()
 
     if previewPosition then
         blockPreview:PivotTo(CFrame.new(previewPosition))
@@ -176,6 +177,7 @@ end
 
 Observers.observeTag("build_tool", function(tool: Tool)
     if tool.Parent == LOCAL_PLAYER.Character then
+        currentTool = tool
         enableBuilding()
 
         if tool:GetAttribute("special_block") then
