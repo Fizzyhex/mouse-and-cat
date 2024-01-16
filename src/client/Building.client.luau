@@ -84,20 +84,6 @@ local blockData: PlacementUtil.BlockData = PlacementUtil.getBlockData(DEFAULT_BL
 local blockPreview: PlacementUtil.BlockModel?
 local previewOutline = PlacementUtil.newPreviewOutline()
 
-local function _onCycleInput(actionName: string, inputState: Enum.UserInputState, inputObject: InputObject)
-    if inputState == Enum.UserInputState.Begin then
-        blockIndex = PlacementUtil.cycle(blockIndex, #DEFAULT_BLOCKS:GetChildren(), "next")
-        blockData = PlacementUtil.getBlockData(DEFAULT_BLOCKS:GetChildren()[blockIndex])
-
-        if blockPreview then
-            blockPreview:Destroy()
-            blockPreview = nil
-        end
-
-        blockPreview = PlacementUtil.previewify(blockData.prefab)
-    end
-end
-
 local function onBuildInput(_, inputState: Enum.UserInputState)
     if inputState == Enum.UserInputState.Begin then
         local raycast = raycastFromScreenPoint(UserInputService:GetMouseLocation())

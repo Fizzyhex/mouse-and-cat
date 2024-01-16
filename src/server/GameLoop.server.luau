@@ -4,7 +4,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local ServerStorage = game:GetService("ServerStorage")
 
-local TagUtil = require(ReplicatedStorage.shared.TagUtil)
 local filter = require(ReplicatedStorage.shared.filter)
 local remotes = require(ReplicatedStorage.shared.remotes)
 local PlayerVitalsTracker = require(script.Parent.PlayerVitalsTracker)
