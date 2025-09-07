@@ -11,7 +11,7 @@ local PlayerVitalsTracker = require(script.Parent.PlayerVitalsTracker)
 local MOUSE_PREAFB = ServerStorage.Mouse
 local ROUND_START_TIME = 15
 local INTERMISSION_DURATION = if RunService:IsStudio() then 3 else 30
-local SPANW_VARIANCE_MIN_WAVE = 3
+local SPANW_VARIANCE_MIN_ROUND = 3
 local TIME_BETWEEN_WAVES = 13
 
 local MAP = workspace.Map
@@ -96,7 +96,9 @@ local function match(dynamic)
             roundNumber += 1
 
             if roundNumber > 1 and roundNumber%3 == 1 then
-                spawnSupplyDrop(dynamic, SUPPLY_DROP_ZONE.Size)
+                for _ = 1, math.random(1, 2) do
+                    spawnSupplyDrop(dynamic, SUPPLY_DROP_ZONE.Size)
+                end
             end
 
             Players.CharacterAutoLoads = true
@@ -130,7 +132,7 @@ local function match(dynamic)
 
             Players.CharacterAutoLoads = false
 
-            for i = 1, waves do
+            for _ = 1, waves do
                 if over then
                     return
                 end
@@ -139,7 +141,7 @@ local function match(dynamic)
                     spawnSupplyDrop(dynamic, SUPPLY_DROP_ZONE.Size)
                 end
 
-                for i = 1, waveSize do
+                for _ = 1, waveSize do
                     if over then
                         return
                     end
@@ -153,7 +155,7 @@ local function match(dynamic)
 
                     enemy.Parent = dynamic
     
-                    if waves > SPANW_VARIANCE_MIN_WAVE and math.random(1, spawnVarianceChance) == 1 then
+                    if roundNumber > SPANW_VARIANCE_MIN_ROUND and math.random(1, spawnVarianceChance) == 1 then
                         spawnPoint = pickSpawn()
                     end
         
